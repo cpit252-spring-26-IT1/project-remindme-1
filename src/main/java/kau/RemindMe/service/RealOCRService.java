@@ -1,16 +1,18 @@
-package kau.RemindMe;
+package kau.RemindMe.service;
+
 
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+
 import java.io.File;
 
-public class OCRManager {
+public class RealOCRService implements OCRService {
+
     private final Tesseract tesseract;
 
-    public OCRManager(String tessdataPath) {
+    public RealOCRService(String tessdataPath) {
         this.tesseract = new Tesseract();
 
-        // Ensure the path exists before setting it
         File path = new File(tessdataPath);
         if (!path.exists()) {
             System.err.println("Warning: Tessdata path does not exist: " + tessdataPath);
@@ -25,14 +27,22 @@ public class OCRManager {
      * @param language Language code (e.g., "eng", "ara", or "eng+ara")
      * @return Extracted text or an error message.
      */
-    public String extractText(String imagePath, String language) {
+
+    @Override
+    public String extractText(String imagePath) {
         try {
             File imageFile = new File(imagePath);
+
             if (!imageFile.exists()) {
                 return "Error: Image file not found at " + imagePath;
             }
 
-            this.tesseract.setLanguage(language);
+
+            tesseract.setLanguage("eng"); //for english only
+            //tesseract.setLanguage("eng + ara"); //for english and arabic M3 b3d.
+            //tesseract.setLanguage("ara"); //for arabic omnly
+
+
             return this.tesseract.doOCR(imageFile);
 
         } catch (TesseractException e) {
