@@ -2,24 +2,30 @@ package kau.RemindMe;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 @SpringBootApplication
 public class RemindMeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(RemindMeApplication.class, args);
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(RemindMeApplication.class, args);
 
         String path = "C:\\Program Files\\Tesseract-OCR\\tessdata";
         OCRManager ocr = new OCRManager(path);
 
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
-        String myImage = "src/main/resources/images/sample.png";
-
-        // OCR for Arabic and English combined
-        String result = ocr.extractText(myImage, "ara+eng");
+        Resource[] images = resolver.getResources("classpath:images/*.png");
 
         System.out.println("--- OCR Results ---");
-        System.out.println(result);
-	}
 
+        for (Resource image : images) {
+            String result = ocr.extractText(image.getFile().getAbsolutePath(), "ara+eng");
+
+            System.out.println("File: " + image.getFilename());
+            System.out.println(result);
+            System.out.println("----------------------");
+        }
+    }
 }
