@@ -33,4 +33,9 @@ public class DocumentServiceImpl implements DocumentService {
     public long daysUntilExpiry(Document doc) {
         return ChronoUnit.DAYS.between(LocalDate.now(), doc.getExpiryDate());
     }
+
+    @Override
+    public Document getDocumentById(Long id) {
+        return repo.findById(id).orElseThrow();
+    }
 }

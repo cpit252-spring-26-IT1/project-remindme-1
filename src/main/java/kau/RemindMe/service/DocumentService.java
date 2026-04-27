@@ -9,4 +9,5 @@ public interface DocumentService {
     Document addDocument(String name, String type, LocalDate expairy,String email,String owner,String category);
     List<Document> getAllDocuments();
     long daysUntilExpiry(Document doc);
+    Document getDocumentById(Long id);
 }
