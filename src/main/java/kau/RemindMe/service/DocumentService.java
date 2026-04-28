@@ -10,4 +10,5 @@ public interface DocumentService {
     List<Document> getAllDocuments();
     long daysUntilExpiry(Document doc);
     Document getDocumentById(Long id);
+    void deleteDocument(Long id);
 }

@@ -41,4 +41,9 @@ public class DocumentController {
         Document doc = service.getDocumentById(id);
         return service.daysUntilExpiry(doc);
     }
+    @DeleteMapping("/documents/{id}")
+    public void delete(@PathVariable Long id) {
+        service.deleteDocument(id);
+    }
+
 }

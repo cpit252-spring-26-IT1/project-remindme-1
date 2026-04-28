@@ -38,4 +38,8 @@ public class DocumentServiceImpl implements DocumentService {
     public Document getDocumentById(Long id) {
         return repo.findById(id).orElseThrow();
     }
+
+    @Override
+    public void deleteDocument(Long id) { repo.deleteById(id); }
+
 }
