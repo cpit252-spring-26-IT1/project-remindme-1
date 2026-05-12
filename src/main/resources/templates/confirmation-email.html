@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        .card { background: #ffffff; border-radius: 8px; padding: 30px; max-width: 500px; margin: auto; }
+        .header { background-color: #4CAF50; color: white; padding: 16px; border-radius: 8px 8px 0 0; text-align: center; }
+        .body { padding: 20px 0; color: #333; }
+        .label { color: #888; font-size: 12px; }
+        .value { font-size: 16px; font-weight: bold; margin-bottom: 12px; }
+        .footer { text-align: center; color: #aaa; font-size: 12px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header">
+        <h2>Document Registered</h2>
+    </div>
+    <div class="body">
+        <p>Hello <strong th:text="${ownerName}"></strong>,</p>
+        <p>Your document has been successfully registered in RemindMe.</p>
+
+        <div class="label">Document Name</div>
+        <div class="value" th:text="${documentName}"></div>
+
+        <div class="label">Expiry Date</div>
+        <div class="value" th:text="${expiryDate}"></div>
+
+        <p>We will remind you 30, 14, and 2 days before it expires.</p>
+    </div>
+    <div class="footer">RemindMe &mdash; Never let a document expire again.</div>
+</div>
+</body>
+</html>
