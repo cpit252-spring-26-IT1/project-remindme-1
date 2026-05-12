@@ -4,6 +4,7 @@ import kau.RemindMe.factroy.DocumentFactory;
 import kau.RemindMe.model.Document;
 import kau.RemindMe.repository.DocumentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -40,8 +41,16 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public List<Document> getAllDocuments() {
-        return repo.findAll();
+    public List<Document> getAllDocuments(String sortBy) {
+        if (sortBy == null || sortBy.isEmpty() || sortBy.equals("default")) {
+            return repo.findAll();
+        }
+        Sort.Direction direction = Sort.Direction.ASC;
+
+        if ("category".equalsIgnoreCase(sortBy)) {
+            direction = Sort.Direction.DESC;
+        }
+        return repo.findAll(Sort.by(direction, sortBy));
     }
 
     @Override
