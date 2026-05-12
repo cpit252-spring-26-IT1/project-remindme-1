@@ -46,4 +46,16 @@ public class DocumentController {
         service.deleteDocument(id);
     }
 
+    @PutMapping("/documents/{id}")
+    public Document update(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        return service.updateDocument(
+                id,
+                body.get("documentName"),
+                body.get("documentType"),
+                LocalDate.parse(body.get("expiryDate")),
+                body.get("userEmail"),
+                body.get("ownerName"),
+                body.get("category")
+        );
+    }
 }

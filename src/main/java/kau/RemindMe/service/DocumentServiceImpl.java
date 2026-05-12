@@ -25,6 +25,21 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    public Document updateDocument(Long id, String name, String type, LocalDate expiry, String email, String owner, String category) {
+        Document existing = repo.findById(id).orElseThrow(() -> new RuntimeException("Document not found"));
+
+        // Update the fields
+        existing.setDocumentName(name);
+        existing.setDocumentType(type);
+        existing.setExpiryDate(expiry);
+        existing.setUserEmail(email);
+        existing.setOwnerName(owner);
+        existing.setCategory(category);
+
+        return repo.save(existing);
+    }
+
+    @Override
     public List<Document> getAllDocuments() {
         return repo.findAll();
     }

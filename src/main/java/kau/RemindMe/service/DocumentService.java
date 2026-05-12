@@ -11,4 +11,5 @@ public interface DocumentService {
     long daysUntilExpiry(Document doc);
     Document getDocumentById(Long id);
     void deleteDocument(Long id);
+    Document updateDocument(Long id, String name, String type, LocalDate expiry, String email, String owner, String category);
 }
