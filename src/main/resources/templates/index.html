@@ -52,6 +52,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-5 py-3">
     <div class="container">
         <a class="navbar-brand fw-bold" href="#"><i class="bi bi-robot me-2"></i> RemindMe Dashboard</a>
+        <a class="btn btn-sm btn-outline-light" onclick="localStorage.clear(); location.reload();">
+            <i class="bi bi-box-arrow-right"></i> Logout </a>
     </div>
 </nav>
 
@@ -175,6 +177,7 @@
     const expiryInput = document.getElementById('expiryDate');
     const sortSelect = document.getElementById('sortSelect');
     const ownerFilter = document.getElementById('ownerFilter');
+    const currentUser = JSON.parse(localStorage.getItem('user'));
 
     // منع اختيار تاريخ قديم (أقل تاريخ هو اليوم)
     const todayStr = new Date().toISOString().split('T')[0];
@@ -187,6 +190,14 @@
     ownerFilter.addEventListener('input', () => {
         loadReminders();
     });
+
+    if (!currentUser) {
+    window.location.href = '/login';
+    } else {
+    // Lock the email input field to the logged-in user's email automatically
+    document.getElementById('userEmail').value = currentUser.email;
+    document.getElementById('userEmail').readOnly = true;
+    }
 
     // Show file name when selected
     fileInput.addEventListener('change', function(e) {
@@ -299,11 +310,11 @@
         const sortBy = sortSelect.value;
         const owner = ownerFilter.value;
 
-        fetch(`/api/documents?sortBy=${sortBy}&owner=${owner}`)
+        fetch(`/api/documents?sortBy=${sortBy}&owner=${owner}&userEmail=${currentUser.email}`)
         .then(res => res.json())
         .then(data => updateTable(data))
-        .catch(err => console.error('Error loading:', err));
-}
+        .catch(err => console.error('Error loading reminders:', err));
+    }
 
     // Submit form to backend
     form.addEventListener('submit', function(e) {

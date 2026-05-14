@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DocumentService {
     Document addDocument(String name, String type, LocalDate expairy,String email,String owner,String category);
-    List<Document> getAllDocuments(String sortBy, String ownerFilter);
+    List<Document> getAllDocuments(String sortBy, String ownerFilter, String userEmail);
     long daysUntilExpiry(Document doc);
     Document getDocumentById(Long id);
     void deleteDocument(Long id);

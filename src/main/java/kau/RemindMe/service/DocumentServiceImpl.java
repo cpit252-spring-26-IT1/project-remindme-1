@@ -43,23 +43,25 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public List<Document> getAllDocuments(String sortBy, String ownerFilter) {
-        List<Document> docs;
+    public List<Document> getAllDocuments(String sortBy, String ownerFilter, String userEmail) {
+
+        List<Document> docs = repo.findByUserEmail(userEmail);
 
         if (ownerFilter != null && !ownerFilter.isEmpty()) {
-            docs = repo.findByOwnerName(ownerFilter);
-        } else {
-            docs = repo.findAll();
+            docs = docs.stream()
+                    .filter(d -> d.getOwnerName().toLowerCase().contains(ownerFilter.toLowerCase()))
+                    .toList();
         }
 
-        if (sortBy != null && !sortBy.isEmpty() && !sortBy.equals("default")) {
-            Sort.Direction direction = Sort.Direction.ASC;
-            if ("category".equalsIgnoreCase(sortBy)) {
-                direction = Sort.Direction.DESC;
+        if (sortBy != null && !sortBy.equals("default")) {
+            if ("expiryDate".equals(sortBy)) {
+                docs = docs.stream().sorted((d1, d2) -> d1.getExpiryDate().compareTo(d2.getExpiryDate())).toList();
+            } else if ("documentName".equals(sortBy)) {
+                docs = docs.stream().sorted((d1, d2) -> d1.getDocumentName().compareToIgnoreCase(d2.getDocumentName())).toList();
+            } else if ("category".equals(sortBy)) {
+                docs = docs.stream().sorted((d1, d2) -> d2.getCategory().compareToIgnoreCase(d1.getCategory())).toList();
             }
-            return repo.findAll(Sort.by(direction, sortBy));
         }
-
         return docs;
     }
 
