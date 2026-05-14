@@ -280,12 +280,12 @@
     }
 
     function prepareEdit(id) {
-    fetch(`/api/documents`)
+    fetch(`/api/documents?userEmail=${currentUser.email}`)
         .then(res => res.json())
         .then(documents => {
             const doc = documents.find(d => d.id === id);
             if (doc) {
-                // Fill the form
+
                 document.getElementById('editId').value = doc.id;
                 document.getElementById('reminderName').value = doc.documentName;
                 document.getElementById('documentType').value = doc.documentType;
@@ -294,12 +294,10 @@
                 document.getElementById('ownerName').value = doc.ownerName;
                 document.getElementById('category').value = doc.category;
 
-                // Change UI to reflect Edit Mode
                 const btn = document.getElementById('submitBtn');
                 btn.innerHTML = `<i class="bi bi-check-lg me-2"></i> Update Reminder`;
                 btn.classList.replace('btn-custom', 'btn-warning');
 
-                // Scroll to form
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         });
@@ -331,7 +329,7 @@
         documentName: document.getElementById('reminderName').value,
         documentType: document.getElementById('documentType').value,
         expiryDate: document.getElementById('expiryDate').value,
-        userEmail: document.getElementById('userEmail').value,
+        userEmail: currentUser.email,
         ownerName: document.getElementById('ownerName').value,
         category: document.getElementById('category').value
     };
