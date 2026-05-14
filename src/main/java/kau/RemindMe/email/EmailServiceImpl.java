@@ -1,4 +1,4 @@
-package kau.RemindMe.service;
+package kau.RemindMe.email;
 
 import kau.RemindMe.model.Document;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,16 +10,17 @@ import org.thymeleaf.context.Context;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
-public class EmailService {
+public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
-    public EmailService(JavaMailSender mailSender, TemplateEngine templateEngine) {
+    public EmailServiceImpl(JavaMailSender mailSender, TemplateEngine templateEngine) {
         this.mailSender = mailSender;
         this.templateEngine = templateEngine;
     }
 
+    @Override
     public void sendConfirmationEmail(Document document) {
         Context context = new Context();
         context.setVariable("documentName", document.getDocumentName());
@@ -30,6 +31,7 @@ public class EmailService {
         sendEmail(document.getUserEmail(), "Document Registered - " + document.getDocumentName(), html);
     }
 
+    @Override
     public void sendReminderEmail(Document document, int daysLeft) {
         Context context = new Context();
         context.setVariable("documentName", document.getDocumentName());

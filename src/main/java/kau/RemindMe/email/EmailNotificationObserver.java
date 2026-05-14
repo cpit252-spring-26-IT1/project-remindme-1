@@ -1,24 +1,25 @@
-package kau.RemindMe.observer;
+package kau.RemindMe.email;
 
 import jakarta.annotation.PostConstruct;
 import kau.RemindMe.model.Document;
-import kau.RemindMe.service.EmailService;
+import kau.RemindMe.observer.DocumentObserver;
+import kau.RemindMe.observer.DocumentSubject;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EmailNotificationObserver implements DocumentObserver {
 
     private final EmailService emailService;
-    private final DocumentSubject subject;
+    private final DocumentSubject documentSubject;
 
-    public EmailNotificationObserver(EmailService emailService, DocumentSubject subject) {
+    public EmailNotificationObserver(EmailService emailService, DocumentSubject documentSubject) {
         this.emailService = emailService;
-        this.subject = subject;
+        this.documentSubject = documentSubject;
     }
 
     @PostConstruct
     public void register() {
-        subject.addObserver(this);
+        documentSubject.addObserver(this);
     }
 
     @Override

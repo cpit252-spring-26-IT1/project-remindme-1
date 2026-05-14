@@ -2,12 +2,14 @@ package kau.RemindMe;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import kau.RemindMe.service.OCRService;
 import kau.RemindMe.service.OCRProxy;
 
 @SpringBootApplication
+@EnableScheduling
 public class RemindMeApplication {
 
     public static void main(String[] args) throws Exception {

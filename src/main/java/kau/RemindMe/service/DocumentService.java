@@ -12,4 +12,5 @@ public interface DocumentService {
     Document getDocumentById(Long id);
     void deleteDocument(Long id);
     Document updateDocument(Long id, String name, String type, LocalDate expiry, String email, String owner, String category);
+    List<Document> findAllDocuments();
 }

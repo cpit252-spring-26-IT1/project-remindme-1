@@ -79,4 +79,9 @@ public class DocumentServiceImpl implements DocumentService {
     public void deleteDocument(Long id) {
         repo.deleteById(id);
     }
+
+    @Override
+    public List<Document> findAllDocuments() {
+        return repo.findAll();
+    }
 }
