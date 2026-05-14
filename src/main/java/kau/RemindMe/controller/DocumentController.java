@@ -20,8 +20,9 @@ public class DocumentController {
     }
     // Get all reminders
     @GetMapping("/documents")
-    public List<Document> getAll(@RequestParam(required = false) String sortBy) {
-        return service.getAllDocuments(sortBy);
+    public List<Document> getAll(@RequestParam(required = false) String sortBy,
+                                 @RequestParam(required = false) String owner) {
+        return service.getAllDocuments(sortBy, owner);
     }
     // Add new reminder
     @PostMapping("/documents")

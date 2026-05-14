@@ -126,6 +126,8 @@
                 <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-3 pb-0">
                     <h5 class="mb-0 fw-bold text-secondary"><i class="bi bi-list-check me-2"></i>Active Reminders</h5>
                     <div class="d-flex align-items-center">
+                        <input type="text" id="ownerFilter" class="form-control form-control-sm me-3 shadow-sm"
+                               placeholder="Filter by Owner" style="width: 200px;">
                         <label class="me-2 text-muted small fw-bold">Sort By:</label>
                         <select id="sortSelect" class="form-select form-select-sm border-0 bg-light shadow-sm" style="width: auto;">
                             <option value="default">Newest First</option>
@@ -172,6 +174,7 @@
     const countBadge = document.getElementById('countBadge');
     const expiryInput = document.getElementById('expiryDate');
     const sortSelect = document.getElementById('sortSelect');
+    const ownerFilter = document.getElementById('ownerFilter');
 
     // منع اختيار تاريخ قديم (أقل تاريخ هو اليوم)
     const todayStr = new Date().toISOString().split('T')[0];
@@ -179,7 +182,11 @@
 
     sortSelect.addEventListener('change', () => {
     loadReminders();
-});
+    });
+
+    ownerFilter.addEventListener('input', () => {
+        loadReminders();
+    });
 
     // Show file name when selected
     fileInput.addEventListener('change', function(e) {
@@ -290,12 +297,13 @@
     // Load all reminders from backend
     function loadReminders() {
         const sortBy = sortSelect.value;
+        const owner = ownerFilter.value;
 
-        fetch(`/api/documents?sortBy=${sortBy}`)
+        fetch(`/api/documents?sortBy=${sortBy}&owner=${owner}`)
         .then(res => res.json())
         .then(data => updateTable(data))
-        .catch(err => console.error('Error loading reminders:', err));
-    }
+        .catch(err => console.error('Error loading:', err));
+}
 
     // Submit form to backend
     form.addEventListener('submit', function(e) {

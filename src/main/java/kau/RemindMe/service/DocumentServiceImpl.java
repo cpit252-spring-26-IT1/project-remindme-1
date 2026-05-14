@@ -43,16 +43,24 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public List<Document> getAllDocuments(String sortBy) {
-        if (sortBy == null || sortBy.isEmpty() || sortBy.equals("default")) {
-            return repo.findAll();
-        }
-        Sort.Direction direction = Sort.Direction.ASC;
+    public List<Document> getAllDocuments(String sortBy, String ownerFilter) {
+        List<Document> docs;
 
-        if ("category".equalsIgnoreCase(sortBy)) {
-            direction = Sort.Direction.DESC;
+        if (ownerFilter != null && !ownerFilter.isEmpty()) {
+            docs = repo.findByOwnerName(ownerFilter);
+        } else {
+            docs = repo.findAll();
         }
-        return repo.findAll(Sort.by(direction, sortBy));
+
+        if (sortBy != null && !sortBy.isEmpty() && !sortBy.equals("default")) {
+            Sort.Direction direction = Sort.Direction.ASC;
+            if ("category".equalsIgnoreCase(sortBy)) {
+                direction = Sort.Direction.DESC;
+            }
+            return repo.findAll(Sort.by(direction, sortBy));
+        }
+
+        return docs;
     }
 
     @Override
