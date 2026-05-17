@@ -343,7 +343,8 @@
     .then(() => {
         loadReminders();
         form.reset();
-        document.getElementById('editId').value = ''; // Clear edit ID
+        document.getElementById('editId').value = '';
+        document.getElementById('userEmail').value = currentUser.email;
 
         // Reset button UI
         btn.innerHTML = `<i class="bi bi-magic me-2"></i> Save Reminder`;
