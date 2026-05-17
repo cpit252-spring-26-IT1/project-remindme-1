@@ -56,6 +56,12 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- BCrypt password hashing -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+		</dependency>
 		<!-- tess4j -->
 		<dependency>
 			<groupId>net.sourceforge.tess4j</groupId>

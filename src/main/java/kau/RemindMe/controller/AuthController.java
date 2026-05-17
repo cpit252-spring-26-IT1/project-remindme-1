@@ -2,6 +2,7 @@ package kau.RemindMe.controller;
 
 import kau.RemindMe.model.User;
 import kau.RemindMe.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Optional;
@@ -12,9 +13,11 @@ import java.util.Optional;
 public class AuthController {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserRepository userRepository) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/signup")
@@ -22,6 +25,7 @@ public class AuthController {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             return Map.of("status", "error", "message", "Email already exists!");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return Map.of("status", "success", "message", "Signup successful!");
     }
@@ -32,7 +36,7 @@ public class AuthController {
         String password = body.get("password");
 
         Optional<User> userOpt = userRepository.findByEmail(email);
-        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
+        if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPassword())) {
             return Map.of("status", "success", "user", userOpt.get());
         }
         return Map.of("status", "error", "message", "Invalid email or password");

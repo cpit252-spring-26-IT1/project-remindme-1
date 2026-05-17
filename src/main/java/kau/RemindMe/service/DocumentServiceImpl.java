@@ -4,8 +4,8 @@ import kau.RemindMe.factroy.DocumentFactory;
 import kau.RemindMe.model.Document;
 import kau.RemindMe.observer.DocumentSubject;
 import kau.RemindMe.repository.DocumentRepository;
+import kau.RemindMe.security.EncryptionService;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -16,16 +16,34 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final DocumentRepository repo;
     private final DocumentSubject subject;
+    private final EncryptionService encryptionService;
 
-    public DocumentServiceImpl(DocumentRepository repo, DocumentSubject subject) {
+    public DocumentServiceImpl(DocumentRepository repo, DocumentSubject subject, EncryptionService encryptionService) {
         this.repo = repo;
         this.subject = subject;
+        this.encryptionService = encryptionService;
+    }
+
+    private Document encrypt(Document doc) {
+        doc.setDocumentName(encryptionService.encrypt(doc.getDocumentName()));
+        doc.setOwnerName(encryptionService.encrypt(doc.getOwnerName()));
+        doc.setUserEmail(encryptionService.encrypt(doc.getUserEmail()));
+        return doc;
+    }
+
+    private Document decrypt(Document doc) {
+        doc.setDocumentName(encryptionService.decrypt(doc.getDocumentName()));
+        doc.setOwnerName(encryptionService.decrypt(doc.getOwnerName()));
+        doc.setUserEmail(encryptionService.decrypt(doc.getUserEmail()));
+        return doc;
     }
 
     @Override
     public Document addDocument(String name, String type, LocalDate expiry, String email, String owner, String category) {
         Document doc = DocumentFactory.createDocument(name, type, expiry, email, owner, category);
+        encrypt(doc);
         doc = repo.save(doc);
+        decrypt(doc);
         subject.notifyRegistered(doc);
         return doc;
     }
@@ -39,13 +57,15 @@ public class DocumentServiceImpl implements DocumentService {
         existing.setUserEmail(email);
         existing.setOwnerName(owner);
         existing.setCategory(category);
-        return repo.save(existing);
+        encrypt(existing);
+        return decrypt(repo.save(existing));
     }
 
     @Override
     public List<Document> getAllDocuments(String sortBy, String ownerFilter, String userEmail) {
 
-        List<Document> docs = repo.findByUserEmail(userEmail);
+        List<Document> docs = repo.findByUserEmail(encryptionService.encrypt(userEmail));
+        docs.forEach(this::decrypt);
 
         if (ownerFilter != null && !ownerFilter.isEmpty()) {
             docs = docs.stream()
@@ -72,7 +92,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Document getDocumentById(Long id) {
-        return repo.findById(id).orElseThrow();
+        return decrypt(repo.findById(id).orElseThrow());
     }
 
     @Override
@@ -82,6 +102,8 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public List<Document> findAllDocuments() {
-        return repo.findAll();
+        List<Document> docs = repo.findAll();
+        docs.forEach(this::decrypt);
+        return docs;
     }
 }
