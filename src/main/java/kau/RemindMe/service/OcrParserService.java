@@ -30,10 +30,11 @@ public class OcrParserService {
         response.setDocumentType("Bank Card");
 
         // Expiry Date (MM/YY)
-        Pattern expiryPattern = Pattern.compile("(\\d{2})/(\\d{2})");
+        Pattern expiryPattern = Pattern.compile("(\\d{2})\\s*/\\s*(\\d{2,4})");
         Matcher matcher = expiryPattern.matcher(cleanText);
         if (matcher.find()) {
-            response.setExpiryDate("20" + matcher.group(2) + "-" + matcher.group(1) + "-01");
+            String year = matcher.group(2).length() == 2 ? "20" + matcher.group(2) : matcher.group(2);
+            response.setExpiryDate(year + "-" + matcher.group(1) + "-01");
         }
 
         // Name Extraction
