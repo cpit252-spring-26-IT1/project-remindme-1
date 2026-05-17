@@ -37,6 +37,7 @@ public class AuthController {
 
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPassword())) {
+            userOpt.get().setPassword(null);
             return Map.of("status", "success", "user", userOpt.get());
         }
         return Map.of("status", "error", "message", "Invalid email or password");
