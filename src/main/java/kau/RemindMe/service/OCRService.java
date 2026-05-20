@@ -1,5 +1,5 @@
 package kau.RemindMe.service;
-
+import java.io.File;
 public interface OCRService {
-    String extractText(String imagePath);
+    String extractText(File file);
 }

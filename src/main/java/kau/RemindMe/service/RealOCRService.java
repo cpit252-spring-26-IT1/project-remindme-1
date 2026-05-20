@@ -1,9 +1,7 @@
 package kau.RemindMe.service;
 
-
 import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
-
+import javax.imageio.ImageIO;
 import java.io.File;
 
 public class RealOCRService implements OCRService {
@@ -12,43 +10,17 @@ public class RealOCRService implements OCRService {
 
     public RealOCRService(String tessdataPath) {
         this.tesseract = new Tesseract();
-
-        File path = new File(tessdataPath);
-        if (!path.exists()) {
-            System.err.println("Warning: Tessdata path does not exist: " + tessdataPath);
-        }
-
         this.tesseract.setDatapath(tessdataPath);
+        this.tesseract.setLanguage("eng");
     }
 
-    /**
-     * Extracts text from an image file.
-     * @param imagePath Path to the image file (png, jpg, etc.)
-     * @param language Language code (e.g., "eng", "ara", or "eng+ara")
-     * @return Extracted text or an error message.
-     */
-
     @Override
-    public String extractText(String imagePath) {
+    public String extractText(File file) {
         try {
-            File imageFile = new File(imagePath);
 
-            if (!imageFile.exists()) {
-                return "Error: Image file not found at " + imagePath;
-            }
-
-
-            tesseract.setLanguage("eng"); //for english only
-            //tesseract.setLanguage("eng + ara"); //for english and arabic M3 b3d.
-            //tesseract.setLanguage("ara"); //for arabic omnly
-
-
-            return this.tesseract.doOCR(imageFile);
-
-        } catch (TesseractException e) {
-            return "OCR Error: " + e.getMessage();
+            return tesseract.doOCR(ImageIO.read(file));
         } catch (Exception e) {
-            return "General Error: " + e.getMessage();
+            throw new RuntimeException("Tesseract engine processing failed", e);
         }
     }
 }

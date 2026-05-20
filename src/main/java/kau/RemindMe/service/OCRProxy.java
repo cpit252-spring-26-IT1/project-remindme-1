@@ -1,67 +1,49 @@
 package kau.RemindMe.service;
 
+import java.io.File;
+
 public class OCRProxy implements OCRService {
 
     private RealOCRService realOCR;
-    private String tessdataPath;
+    private final String tessdataPath;
+    private final String cleanFileName;
 
-    public OCRProxy(String tessdataPath) {
+
+    public OCRProxy(String tessdataPath, String cleanFileName) {
         this.tessdataPath = tessdataPath;
+        this.cleanFileName = cleanFileName;
     }
 
     @Override
-    public String extractText(String imagePath) {
-
-        // =========================
-        //  VALIDATION LAYER to make sure it is not empty
-        // =========================
-
-        if (imagePath == null || imagePath.isEmpty()) {
-            return "Error: image path is null or empty";
-        }
-
-        java.io.File file = new java.io.File(imagePath);
-
-        if (!file.exists()) {
-            return "Error: file does not exist -> " + imagePath;
-        }
-
-        if (!file.isFile()) {
-            return "Error: path is not a valid file -> " + imagePath;
-        }
-
-        String lower = file.getName().toLowerCase();
-        if (!(lower.endsWith(".png") || lower.endsWith(".jpg") || lower.endsWith(".jpeg"))) {
-            return "Error: unsupported file format -> " + file.getName();
-        }
-
-        // =========================
-        // to only intialize if needed
-        // =========================
-
+    public String extractText(File file) {
         if (realOCR == null) {
-            System.out.println("Initializing OCR engine...");
+            System.out.println("[OCR Proxy] Initializing RealOCRService engine instance...");
             realOCR = new RealOCRService(tessdataPath);
         }
 
-        // =========================
-        //  PERFORMANCE LOGGING tell me how long it has taken to do the OCR
-        // =========================
-
         long startTime = System.currentTimeMillis();
+        String result;
 
-        String result = realOCR.extractText(imagePath);
+        try {
+            result = realOCR.extractText(file);
+        } catch (Exception e) {
+            System.err.println("[OCR Proxy Error] Native extraction failed: " + e.getMessage());
+            return "";
+        }
 
         long endTime = System.currentTimeMillis();
-
         long duration = endTime - startTime;
 
-        System.out.println("OCR processed file: " + file.getName());
-        System.out.println("Processing time: " + duration + " ms");
 
-        // =========================
-        // RETURN RESULT
-        // =========================
+        //System.out.println("\n=== RAW OCR TEXT ===");
+        //System.out.println(result);
+        //System.out.println("==============================");
+
+
+        System.out.println("----------------------------------------");
+        System.out.println("OCR Processed File : " + cleanFileName);
+        System.out.println("Processing Time    : " + duration + " ms");
+        System.out.println("----------------------------------------\n");
 
         return result;
     }

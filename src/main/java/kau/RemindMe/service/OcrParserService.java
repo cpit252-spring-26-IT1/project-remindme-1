@@ -56,23 +56,23 @@ public class OcrParserService {
     private void processUniversityCard(String cleanText, OcrFormResponse response) {
         response.setDocumentType("University Card");
 
-        // 1. Look for the 4-digit Year (2024)
+        //  Look for the 4-digit Year (2024)
         // We look for a 4-digit number starting with 20
         Pattern yearPattern = Pattern.compile("\\b(20\\d{2})\\b");
         Matcher yearMatcher = yearPattern.matcher(cleanText);
 
         if (yearMatcher.find()) {
             String year = yearMatcher.group(1);
-            // Default to January 1st as requested: YYYY-01-01
+            // Default to January 1st : YYYY-01-01
             response.setExpiryDate(year + "-01-01");
         }
 
-        // 2. Look for the 7-digit ID (For reference, though not needed for the form)
+        // Look for the 7-digit ID
         Pattern idPattern = Pattern.compile("\\b(\\d{7})\\b");
         Matcher idMatcher = idPattern.matcher(cleanText);
         String universityId = idMatcher.find() ? idMatcher.group(1) : "";
 
-        // 3. Set standard Reminder Name
+        // Set Reminder Name
         response.setReminderName("University Card For " + universityId);
         response.setOwnerName(""); // Skipping name as it's in Arabic
     }
