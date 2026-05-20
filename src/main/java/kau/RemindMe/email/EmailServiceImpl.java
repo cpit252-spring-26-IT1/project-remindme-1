@@ -11,6 +11,7 @@ import org.thymeleaf.context.Context;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
+
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
@@ -30,7 +31,6 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("documentName", document.getDocumentName());
         context.setVariable("expiryDate", document.getExpiryDate());
         context.setVariable("ownerName", document.getOwnerName());
-
         String html = templateEngine.process("confirmation-email", context);
         sendEmail(document.getUserEmail(), "Document Registered - " + document.getDocumentName(), html);
     }
