@@ -18,6 +18,47 @@ Built for the CPIT 252 at King Abdulaziz University.
 - **Encrypted storage** — Sensitive fields (document name, owner name, email) are AES-encrypted in the database
 
 ---
+## Application Walkthrough
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/955467ef-0e96-4767-a41d-813e8cf99a38" width="600" alt="Login Page Screen"/>
+  <br>
+  <p align="left" style="max-width: 600px; margin: 10px auto;"><strong>Step 1: Login Page</strong> — Secure authentication portal allowing registered users to access their private document vault.</p>
+</div>
+
+---
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/5a3615b4-4ff7-4349-b074-0d8706cb295e" width="600" alt="Main Dashboard Screen"/>
+  <br>
+  <p align="left" style="max-width: 600px; margin: 10px auto;"><strong>Step 2: Main Dashboard</strong> — Displays all active document reminders in a single unified view, categorized with dynamic status badges.</p>
+</div>
+
+---
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/61970b3a-0ea4-4444-b97c-f2f13c118b69" width="600" alt="OCR Extraction Interface Screen"/>
+  <br>
+  <p align="left" style="max-width: 600px; margin: 10px auto;"><strong>Step 3: OCR Extraction Interface</strong> — Uploading a document image automatically triggers the underlying Tesseract engine to parse text and autofill form details.</p>
+</div>
+
+---
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/7fd99cde-cd17-49de-b604-0a4f215dad52" width="600" alt="Saved Reminder Operations Screen"/>
+  <br>
+  <p align="left" style="max-width: 600px; margin: 10px auto;"><strong>Step 4: Saved Reminder Operations</strong> — Confirms the record is successfully saved in the system, where it can now be modified, updated, or deleted as needed.</p>
+</div>
+
+---
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/7d2442ab-2930-40af-bc44-1a42c6a741fb" width="600" alt="Automated Email Notifications Screen"/>
+  <br>
+  <p align="left" style="max-width: 600px; margin: 10px auto;"><strong>Step 5: Automated Email Notifications</strong> — A confirmation email is instantly dispatched upon creation. Automated expiration alerts follow systematically at the 30, 14, and 2-day marks.</p>
+</div>
+
+---
 
 ## Design Patterns
 
