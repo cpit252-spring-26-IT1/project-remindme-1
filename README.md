@@ -151,5 +151,4 @@ AI assisted in structuring the dashboard layout, applying CSS styles, and writin
 ### 2. Debugging & Troubleshooting
 AI acted as a debugging assistant to help isolate runtime exceptions, resolve Spring Boot configuration issues, and refactor code during architectural changes.
 
-**Statement of Academic Integrity**
-All core backend architecture, database design, service layer logic, and Design Pattern implementations including the Factory, Proxy, and Observer patterns were independently conceptualized and implemented by the development team to meet the course requirements.
+**Statement of Academic Integrity:** All core backend architecture, database design, service layer logic, and Design Pattern implementations including the Factory, Proxy, and Observer patterns were independently conceptualized and implemented by the development team to meet the course requirements.
