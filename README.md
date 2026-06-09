@@ -137,3 +137,19 @@ src/main/java/kau/RemindMe/
 ├── security/      EncryptionService interface + AES implementation
 └── service/       Business logic + OCR (Proxy Pattern)
 ```
+---
+
+## AI Utilization Disclosure
+
+This section outlines how AI was used as a development assistant during the RemindMe project.
+
+AI tools were leveraged to improve development efficiency and accelerate troubleshooting in the following areas:
+
+### 1. Frontend Development & UI Engineering
+AI assisted in structuring the dashboard layout, applying CSS styles, and writing JavaScript functions responsible for client-side data rendering, table state management, and dynamic status badge logic based on days remaining until expiry.
+
+### 2. Debugging & Troubleshooting
+AI acted as a debugging assistant to help isolate runtime exceptions, resolve Spring Boot configuration issues, and refactor code during architectural changes.
+
+Statement of Academic Integrity
+All core backend architecture, database design, service layer logic, and Design Pattern implementations including the Factory, Proxy, and Observer patterns were independently conceptualized and implemented by the development team to meet the course requirements.
